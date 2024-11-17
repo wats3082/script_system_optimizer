@@ -1,6 +1,49 @@
 # script_system_optimizer
 
+# PowerShell Script for System Optimization
 
+# Clean temporary files
+Write-Host "Cleaning temporary files..."
+Remove-Item -Path $env:TEMP\* -Recurse -Force
+Remove-Item -Path "C:\\Windows\\Temp\\*" -Recurse -Force
+
+# Clear Internet Explorer Cache
+Write-Host "Clearing Internet Explorer Cache..."
+RunDll32.exe InetCpl.cpl,ClearMyTracksByProcess 255
+
+# Optimize the disk (Windows built-in command)
+Write-Host "Optimizing the disk..."
+defrag C: /O /H
+
+# Disable unnecessary startup programs (example: disable OneDrive)
+Write-Host "Disabling unnecessary startup programs..."
+Stop-Process -Name OneDrive -Force
+Remove-Item -Path "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\\OneDrive" -Force
+
+# Check system performance (CPU & Memory usage)
+Write-Host "Checking system performance..."
+Get-Process | Sort-Object CPU -Descending | Select-Object -First 10
+Get-Process | Sort-Object WorkingSet -Descending | Select-Object -First 10
+
+# Update system (Windows Update)
+Write-Host "Running Windows Updates..."
+Install-Module PSWindowsUpdate -Force -SkipPublisherCheck
+Get-WindowsUpdate -AcceptAll -Install -AutoReboot
+
+# Perform a simple port scan (Windows version of nmap or PowerShell alternative)
+Write-Host "Performing port scan on localhost..."
+$open_ports = Test-NetConnection -ComputerName localhost -Port 80,443,22,3389
+$open_ports | Format-Table -Property ComputerName,RemoteAddress,RemotePort,TcpTestSucceeded
+
+# CPU Usage Optimization:
+Write-Host "Checking CPU usage and identifying high CPU processes..."
+$high_cpu_processes = Get-Process | Sort-Object CPU -Descending | Select-Object -First 5
+$high_cpu_processes | Format-Table -Property Name, CPU, Id
+
+# Optional: Kill high CPU consuming processes (be careful!)
+# Stop-Process -Id $high_cpu_processes.Id[0]  # Uncomment to kill the top CPU process
+
+Write-Host "CPU usage optimization complete. High CPU processes have been reviewed."
 
 ### **How to Use:**
 

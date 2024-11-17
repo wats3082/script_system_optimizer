@@ -2,38 +2,6 @@
 
 
 
-To add a **CPU usage optimizer** to the system optimization scripts, we need to implement measures that can either:
-
-1. **Identify and stop processes** that are consuming excessive CPU.
-2. **Optimize system settings** to balance CPU usage or prioritize certain tasks.
-3. **Monitor CPU usage** and take corrective actions based on high utilization.
-
-While **CPU optimization** isn't as straightforward as other system optimizations (e.g., disk cleanup), we can create a strategy that involves:
-
-- **Listing high CPU-consuming processes**.
-- **Killing unnecessary high-CPU processes** (optional, but useful if the processes are deemed non-essential).
-- **Prioritizing CPU for certain tasks** (setting CPU affinity or adjusting priority, though these methods are usually for advanced scenarios).
-
-We will integrate this into both the **PowerShell** (Windows) and **Bash** (Linux/macOS) scripts. The CPU usage optimizer will:
-
-1. Identify high CPU-consuming processes.
-2. Optionally, stop or lower the priority of high-CPU processes.
-3. Provide system performance statistics for review.
-
-
-### **Explanation of Changes:**
-
-1. **PowerShell Script**:
-    - **CPU Usage Optimization**: The script now checks for processes using the most CPU using `Get-Process`, sorts them in descending order, and selects the top 5 highest CPU-consuming processes.
-    - **Optional Termination of Processes**: You can optionally terminate the highest CPU-consuming process by uncommenting the `Stop-Process` line (be cautious when using this in a production environment as it may kill critical system processes).
-    - The CPU processes are displayed in a table for easier review.
-
-2. **Bash Script**:
-    - **CPU Usage Optimization**: The script uses the `top` command to display the top 20 processes by CPU usage.
-    - **Optional Process Termination**: We use `kill -9` to terminate the highest CPU-consuming process by extracting the PID from `top` and killing it. This part is commented out by default, but you can uncomment it if you want the script to automatically kill high-CPU processes.
-
----
-
 ### **How to Use:**
 
 1. **Run the Python Script**:
